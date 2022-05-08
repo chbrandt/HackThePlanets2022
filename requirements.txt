@@ -1,0 +1,5 @@
+numpy
+pandas
+tifffile
+matplotlib
+adamapi==2.0.9
