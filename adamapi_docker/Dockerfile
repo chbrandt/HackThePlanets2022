@@ -28,5 +28,7 @@ ENV PATH="${VENVNAME}/bin:$PATH"
 RUN pip install adamapi==2.0.9 jupyter
 RUN ln -s "/usr/lib/python3/dist-packages/osgeo" "${VENVNAME}/lib/python3.8/site-packages/osgeo"
 
+RUN pip install pandas matplotlib
+
 RUN echo "which python"
 RUN echo "source ${VENVNAME}/bin/activate && jupyter notebook --ip='*' --port=8888 --no-browser --allow-root" >> /app/start_notebook.sh
