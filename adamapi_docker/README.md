@@ -6,7 +6,7 @@ This docker image provides an Ubuntu container with python 3.8 and the adamapi A
 Build the image with:
 ```
 cd adamapi_docker
-docker build --tag latest .
+docker build --tag adamapiimg:latest .
 ```
 Start a jupyter server inside a new container:
 ```
