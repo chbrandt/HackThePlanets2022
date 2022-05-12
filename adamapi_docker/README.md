@@ -10,5 +10,6 @@ docker build --tag adamapiimg:latest .
 ```
 Start a jupyter server inside a new container:
 ```
+export SHARED_VOLUME=/data/datasets/hack_the_planets
 ./start_notebook.sh
 ```
