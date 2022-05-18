@@ -1,5 +1,6 @@
 import os
 import time
+import argparse
 import numpy as np
 from tqdm import tqdm
 from os import listdir
@@ -37,7 +38,11 @@ def train_step(images):
 
 if __name__=='__main__':
 
-    data_path = Path("/shared_volume/npy")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--dataset", type=str, help='The path to .npy dataset files')
+    args = parser.parse_args()
+
+    data_path = Path(args.dataset)
 
     data_files = [data_path.joinpath(f) for f in listdir(data_path)]
     
