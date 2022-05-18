@@ -9,8 +9,8 @@ setuptools.setup(
      author_email='antonio.addis@inaf.it, leonardo.baroncelli@inaf.it, ambra.dipiano@inaf.it',
      package_dir={'hackp': 'hackp'},
      license='BSD-3-Clause',
-     python_requires=">=3.8.10",
+     python_requires=">=3.7.9",
      install_requirements=[
-          requirements
+          #requirements
      ]
 )
