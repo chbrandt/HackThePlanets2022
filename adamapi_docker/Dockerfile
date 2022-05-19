@@ -4,7 +4,7 @@ LABEL maintainer="leonardo.baroncelli@inaf.it"
 LABEL version="0.1"
 LABEL description="This is custom Docker Image that encapsulate the adam api."
 
-WORKDIR /app/
+WORKDIR /shared_dir
 
 RUN apt update
 RUN apt upgrade -y
