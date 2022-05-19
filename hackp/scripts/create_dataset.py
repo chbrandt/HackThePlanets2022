@@ -8,7 +8,6 @@ from hackp.utils.imgproc import read_tiff, extract_regions
 
 if __name__=='__main__':
 
-    # TODO: datapath, outputpath, size and stride as input args
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--dataset", type=str, required=True, help='The path to an input direcotry containing .tif files')
     parser.add_argument("-o", "--output", type=str, required=True, help='The path to an output direcotry that will contain .npy files')
