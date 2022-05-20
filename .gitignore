@@ -4,6 +4,9 @@ adam_api_key.txt
 *.tif
 *.pickle
 *.png
+
+# Training checkpoints
+hackp/models/dcgan_tf/training_checkpoints/
  
 # Byte-compiled / optimized / DLL files
 __pycache__/
