@@ -30,21 +30,10 @@ def make_generator_model(image_size):
     model.add(layers.BatchNormalization())
     model.add(layers.LeakyReLU())
 
-    model.add(layers.Conv2DTranspose(32, (5, 5), strides=(2, 2), padding='same', use_bias=False, activation='tanh'))
-    #print(model.output_shape)
-    assert model.output_shape == (None, 256, 256, 32)
-    model.add(layers.BatchNormalization())
-    model.add(layers.LeakyReLU())
-
-    model.add(layers.Conv2DTranspose(16, (5, 5), strides=(2, 2), padding='same', use_bias=False, activation='tanh'))
-    #print(model.output_shape)
-    assert model.output_shape == (None, 512, 512, 16)
-    model.add(layers.BatchNormalization())
-    model.add(layers.LeakyReLU())
-
     model.add(layers.Conv2DTranspose(1, (5, 5), strides=(2, 2), padding='same', use_bias=False, activation='tanh'))
-    #print(model.output_shape)
+    print(model.output_shape)
     assert model.output_shape == (None, image_size, image_size, 1)
+
 
     print(model.summary())
     input("..")
@@ -53,5 +42,5 @@ def make_generator_model(image_size):
 def generator_loss(fake_output):
     # This method returns a helper function to compute cross entropy loss
     cross_entropy = tf.keras.losses.BinaryCrossentropy(from_logits=True)
-        
+
     return cross_entropy(tf.ones_like(fake_output), fake_output)
