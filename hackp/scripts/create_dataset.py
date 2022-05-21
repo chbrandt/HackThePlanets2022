@@ -4,7 +4,8 @@ from tqdm import tqdm
 from os import listdir
 from pathlib import Path
 
-from hackp.utils.imgproc import read_tiff, extract_regions
+from hackp.utils.imgproc import extract_regions
+from hackp.tif import read_tif
 
 if __name__=='__main__':
 
@@ -30,10 +31,10 @@ if __name__=='__main__':
 
         if not output_file.exists():
 
-            img = read_tiff(tif_file)
+            img = read_tif(tif_file)
 
             regions = extract_regions(img, args.size, args.stride)
 
             print(f"Extracted images: {len(regions)}")
-            
+
             np.save(output_file, regions)
