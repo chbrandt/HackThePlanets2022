@@ -4,6 +4,7 @@ adam_api_key.txt
 *.tif
 *.pickle
 adamapi_docker/loadvars.sh
+*.DS_Store*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
