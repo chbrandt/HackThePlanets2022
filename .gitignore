@@ -6,6 +6,11 @@ adam_api_key.txt
 adamapi_docker/loadvars.sh
 *.DS_Store*
 
+*.png
+
+# Training checkpoints
+hackp/models/dcgan_tf/training_checkpoints/
+ 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
