@@ -3,7 +3,8 @@ adam_api_key.txt
 *.zip
 *.tif
 *.pickle
- 
+adamapi_docker/loadvars.sh
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
