@@ -1,6 +1,7 @@
 # Files
 adam_api_key.txt
 *.zip
+*.npy
 *.tif
 *.pickle
 adamapi_docker/loadvars.sh
