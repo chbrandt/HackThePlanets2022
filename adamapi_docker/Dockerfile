@@ -34,5 +34,7 @@ RUN pip install geopandas shapely rasterio
 
 RUN pip install tensorflow tensorflow_datasets
 
+RUN pip install astropy
+
 RUN echo "which python"
 RUN echo "source ${VENVNAME}/bin/activate && jupyter notebook --ip='*' --port=8888 --no-browser --allow-root" >> /app/start_notebook.sh
