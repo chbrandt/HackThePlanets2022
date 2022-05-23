@@ -6,7 +6,6 @@ adam_api_key.txt
 *.pickle
 adamapi_docker/loadvars.sh
 *.DS_Store*
-*.geojson
 
 *.png
 
