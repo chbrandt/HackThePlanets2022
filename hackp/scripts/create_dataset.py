@@ -1,12 +1,16 @@
+import os
 import argparse
 import numpy as np
-from tqdm import tqdm
 from os import listdir
 import multiprocessing
 from pathlib import Path
+from functools import partial 
 
+from hackp.utils.tif import read_tif
 from hackp.utils.imgproc import extract_regions
-from hackp.tif import read_tif
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 
 def extract_patch_and_save(output_dir, tif_file):
 
@@ -14,9 +18,9 @@ def extract_patch_and_save(output_dir, tif_file):
 
     if not output_file.exists():
 
-        img = read_tif(tif_file)
+        print(f"Opening: {tif_file.stem}")
 
-        regions = extract_regions(img, args.size, args.stride)
+        regions = extract_regions(read_tif(tif_file), args.size, args.stride)
 
         print(f"Extracted images: {len(regions)} with shape {regions[0].shape}")
 
@@ -40,8 +44,8 @@ if __name__=='__main__':
     args = parser.parse_args()
 
     dataset = Path(args.dataset)
-    output_dir = Path(args.output)
 
+    output_dir = Path(args.output)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     unzipped_data_files = [dataset.joinpath(f) for f in listdir(dataset) if dataset.joinpath(f).exists()]

@@ -1,8 +1,9 @@
+import os
 import shutil
 import argparse
 import multiprocessing
 from pathlib import Path
-
+from functools import partial
 
 def extract_zip(output_dir, zip_file):
 
