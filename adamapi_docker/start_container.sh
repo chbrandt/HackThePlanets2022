@@ -11,6 +11,7 @@ else
     -v "${SHARED_VOLUME}":/shared_volume \
     -v $script_dir/../notebooks:/shared_dir/notebooks \
     -v $script_dir/../hackp:/shared_dir/hackp \
+    -v $script_dir/../data:/shared_dir/data \
     adamapiimg:latest /bin/bash
 
 fi
