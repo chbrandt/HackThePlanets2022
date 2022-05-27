@@ -30,6 +30,8 @@ def extract_patch_and_save(output_dir, tif_file):
         elif args.format == "png":
             pass
 
+        return len(regions)
+
 
 
 if __name__=='__main__':
@@ -50,6 +52,8 @@ if __name__=='__main__':
 
     unzipped_data_files = [dataset.joinpath(f) for f in listdir(dataset) if dataset.joinpath(f).exists()]
 
-    pool = multiprocessing.Pool(processes=args.njobs)
+    with multiprocessing.Pool(processes=args.njobs) as pool:
 
-    pool.map(partial(extract_patch_and_save, output_dir), unzipped_data_files)
+        maps = pool.map(partial(extract_patch_and_save, output_dir), unzipped_data_files)
+
+        print(f"Total maps: {sum(maps)}")
