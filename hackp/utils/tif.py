@@ -1,4 +1,5 @@
 import rasterio
+import numpy as np
 
 def read_tif(filepath):
     img = None
