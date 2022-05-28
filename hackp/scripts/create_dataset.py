@@ -1,4 +1,5 @@
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '0'
 import argparse
 import numpy as np
 from os import listdir
@@ -9,28 +10,36 @@ from functools import partial
 from hackp.utils.tif import read_tif
 from hackp.utils.imgproc import extract_regions
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
+def save_img(img, output_dir, format, filename):
 
-def extract_patch_and_save(output_dir, tif_file):
-
-    output_file = output_dir.joinpath(tif_file.stem).with_suffix(".npy")
+    output_file = output_dir.joinpath(filename).with_suffix(".npy")
 
     if not output_file.exists():
 
-        print(f"Opening: {tif_file.stem}")
+        if format == "npy":
+            # print(f"Saving {output_file}")
+            np.save(output_file, img)
 
-        regions = extract_regions(read_tif(tif_file), args.size, args.stride)
-
-        print(f"Extracted images: {len(regions)} with shape {regions[0].shape}")
-
-        if args.format == "npy":
-            np.save(output_file, regions)
-
-        elif args.format == "png":
+        elif format == "png":
             pass
 
-        return len(regions)
+    
+def extract_patch_and_save(output_dir, format, tif_file):
+
+        print(f"Opening: {tif_file.stem}")
+
+        regions = np.expand_dims( 
+                        extract_regions(read_tif(tif_file), args.size, args.stride)
+                            .reshape(-1, args.size, args.size)
+        , axis=-1) # => (N,H,W,C)
+
+        print(f"Extracted images: {regions.shape}") # (N, H, W)
+
+        for idx,region in enumerate(regions):
+            save_img(region, output_dir, format, tif_file.stem+f"_{idx}")
+
+        return regions.shape[0]
 
 
 
@@ -42,7 +51,7 @@ if __name__=='__main__':
     parser.add_argument("-sz", "--size", type=int, required=True, help='The size of the square images that are going to be extracted')
     parser.add_argument("-st", "--stride", type=int, required=True, help='If stride==size, there will be no overlapping')
     parser.add_argument("-f", "--format", type=str, required=True, choices=["npy", "png"], help="The output file format")
-    parser.add_argument("-nj", "--njobs", type=int, required=True, help="The number of worker threads")
+    parser.add_argument("-nrj", "--n-reader-jobs", type=int, required=False, default=2, help="The number of worker reader threads")
     args = parser.parse_args()
 
     dataset = Path(args.dataset)
@@ -52,8 +61,8 @@ if __name__=='__main__':
 
     unzipped_data_files = [dataset.joinpath(f) for f in listdir(dataset) if dataset.joinpath(f).exists()]
 
-    with multiprocessing.Pool(processes=args.njobs) as pool:
+    with multiprocessing.Pool(processes=args.n_reader_jobs) as pool:
 
-        maps = pool.map(partial(extract_patch_and_save, output_dir), unzipped_data_files)
+        maps = pool.map(partial(extract_patch_and_save, output_dir, args.format), unzipped_data_files)
 
-        print(f"Total maps: {sum(maps)}")
+        print(f"Total files produced: {sum(maps)}")
