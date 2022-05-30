@@ -17,7 +17,7 @@ def save_img(img, output_dir, filename):
     output_file = output_dir.joinpath(filename).with_suffix(".npy")
     
     if not output_file.exists():
-        np.save(output_file, img)
+        return np.save(output_file, img)
     
     return False 
     
