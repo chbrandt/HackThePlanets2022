@@ -11,6 +11,7 @@
       - [Training](#training)
       - [Tensorboard](#tensorboard)
       - [Workarounds](#workarounds)
+      - [Results](#results)
 ## Docker image
 
 You can build a docker image that provides an Ubuntu OS with python 3.8 and the adamapi python library.
@@ -50,8 +51,8 @@ From those tif files, the following datasets have been generated:
 |------------|--------|-----------------|--------------|----------------------------------------------------|
 | 128x128    | 128    | 529787          | 35GB         | agilehost3:/scratch/hacktheplanets/craters-npy-128 |
 | 256x256    | 256    | 127683          | 32GB         | agilehost3:/scratch/hacktheplanets/craters-npy-256 |
-| 512x512    | 256    | 118411          | 117GB        | /scratch/hack_the_planets/craters-npy-512-256st    |
-| 1024x1024  | 1024   | 6212            | 25GB         | /scratch/hack_the_planets/craters-npy-1024         |
+| 512x512    | 256    | 118411          | 117GB        | ibmtest:/scratch/hack_the_planets/craters-npy-512-256st    |
+| 1024x1024  | 1024   | 6212            | 25GB         | ibmtest:/scratch/hack_the_planets/craters-npy-1024         |
 ## Models
 ### StyleGAN2-ADA - ppc64le (POWER9)
 The NVIDIA StyleGAN2-ADA repository has been forked, and adapted to work with a
@@ -111,3 +112,7 @@ This will overcome a compilation error (__ieee128 is undefined).
 images = np.squeeze(images, axis=2)
 ```
 This will overcome a runtime error.
+
+#### Results
+Model for 512 resolution images:
+![StyleGAN2-ADA Generator](assets/img/stylega2-ada-512-res-fakes001228.png)
