@@ -1,32 +1,58 @@
 # Hack the planets 2022
+## Table of contents
+- [Hack the planets 2022](#hack-the-planets-2022)
+  - [Table of contents](#table-of-contents)
+  - [Docker image](#docker-image)
+  - [Dataset generation](#dataset-generation)
+    - [Dataset 'craters'](#dataset-craters)
+  - [Models](#models)
+    - [StyleGAN2-ADA - ppc64le (POWER9)](#stylegan2-ada---ppc64le-power9)
+      - [Dataset for StyleGAN2-ADA](#dataset-for-stylegan2-ada)
+      - [Training](#training)
+      - [Tensorboard](#tensorboard)
+      - [Workarounds](#workarounds)
+## Docker image
 
-## Docker container
+You can build a docker image that provides an Ubuntu OS with python 3.8 and the adamapi python library.
+
+Build the image with:
 ```
 cd adamapi_docker
+docker build --no-cache --network=host --tag adamapiimg:latest .
+```
+Start a jupyter server inside a new container:
+```
+export SHARED_VOLUME=/data/datasets/hack_the_planets
+./start_notebook.sh
+```
+Start a shell inside a new container:
+```
 ./start_container.sh
 export PYTHONPATH=/shared_dir
 ```
+
 ## Dataset generation
 
-1. Use the notebook 'download_products_from_ids.py' script to download the tif files.
+1. Use the script 'download_products_from_ids.py' script to download the tif files. The input is a .txt file containing the products ids you want to download.
 ```
 cd hackp/scripts
 python download_products_from_ids.py -f /shared_dir/data/craters_dataset.txt -o /shared_volume/tif_craters -t <apikey> -dsid 58592:MRO_CTX
 ```
-2. Use the 'create_dataset' script to generate the images for the training in .npy format.
-3. You can use the 'display_dataset' script to generate some png previews of those images.
+2. Use the 'create_dataset.py' script to generate the images for the training in .npy format.
+3. You can use the 'display_dataset.py' script to generate some .png previews of those images.
 
-### Dataset craters
+### Dataset 'craters'
 The 56 products that compose this dataset can be found in data/craters_dataset.txt
 
 From those tif files, the following datasets have been generated:
-* 128x128 resolution (stride=128), 529787 .npy files, 35G of size, agilehost3:/scratch/hacktheplanets
-* 256x256 resolution (stride=256), 127683 .npy files, 32GB of size, agilehost3:/scratch/hacktheplanets
-* 512x512 resolution (stride=256), 118411.npy files, of size, morgana:/data01/hacktheplanets
-* 1024x1024 resolution (stride=1024), 6212 .npy files, 25GB of size, ibmtest:/scratch/hacktheplanets
 
+| Resolution | Stride | Number of files | Total memory | Location                                           |
+|------------|--------|-----------------|--------------|----------------------------------------------------|
+| 128x128    | 128    | 529787          | 35GB         | agilehost3:/scratch/hacktheplanets/craters-npy-128 |
+| 256x256    | 256    | 127683          | 32GB         | agilehost3:/scratch/hacktheplanets/craters-npy-256 |
+| 512x512    | 256    | 118411          | 117GB        | /scratch/hack_the_planets/craters-npy-512-256st    |
+| 1024x1024  | 1024   | 6212            | 25GB         | /scratch/hack_the_planets/craters-npy-1024         |
 ## Models
-
 ### StyleGAN2-ADA - ppc64le (POWER9)
 The NVIDIA StyleGAN2-ADA repository has been forked, and adapted to work with a
 power9 machine.
@@ -36,8 +62,8 @@ Checkout the power9 branch and create an anaconda environment with:
 cd stylegan2-ada-fork
 conda env create --file environment.yml
 ```
-
 #### Dataset for StyleGAN2-ADA
+The .npy dataset [must be converted into multi-resolution TFRecords](https://github.com/LeoBaro/stylegan2-ada/tree/3bba7a31472ec69cbc1475d6529a8614206ded2a#preparing-datasets). 
 The dataset_tool.py script has been modified to be able to process .npy data and to
 write preview of the generated images in the .png format (instead of showing them with opencv).
 ```
@@ -46,16 +72,17 @@ python dataset_tool.py png_preview /scratch/hack_the_planets/craters-multi-res-1
 ```
 
 #### Training
-The training can be started *from scratch* with:
+The training can be started **from scratch on ibmtest** with:
 ```
+cd stylegan2-ada-fork
 conda activate stylegan2ada
 source ../load_nvcc.sh
 module load gcc-8.5.0
 nohup python train.py --outdir=./training-runs --gpus=2 --data=/scratch/hack_the_planets/craters-multi-res-512-256st --mirror=1 --cfg=stylegan2 --snap=10 > train_512sz_256st.log 2>&1 &
 ```
-Check the StyleGAN2-ada README.md for other details.
+Check the [StyleGAN2-ada README.md](https://github.com/LeoBaro/stylegan2-ada/tree/3bba7a31472ec69cbc1475d6529a8614206ded2a#training-new-networks) for other details.
 
-If you want to restore a training:
+If you want to restore a training, add the following input parameter:
 ```
 --resume=~/training-runs/<RUN_NAME>/network-snapshot-<KIMG>.pkl
 ```
@@ -68,7 +95,7 @@ nohup tensorboard --logdir ./ --port 6006 > tensorboard.log 2>&1 &
 ```
 On the local machine:
 ```
-ssh -N -L localhost:16006:localhost:6006 baroncelli@ibmtest.iasfbo.inaf.it
+ssh -N -L localhost:16006:localhost:6006 <username>@<remote_machine_dns_name>
 ```
 
 #### Workarounds
