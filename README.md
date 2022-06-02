@@ -57,7 +57,7 @@ Check the StyleGAN2-ada README.md for other details.
 
 If you want to restore a training:
 ```
---resume=ffhq1024 --snap=10
+--resume=~/training-runs/<RUN_NAME>/network-snapshot-<KIMG>.pkl
 ```
 
 #### Tensorboard
