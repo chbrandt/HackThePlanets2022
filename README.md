@@ -7,11 +7,14 @@
 3. You can use the 'display_dataset' script to generate some png previews of those images.
 
 ### Dataset craters
+<<<<<<< Updated upstream
 The 56 products that compose this dataset can be found in data/craters_dataset.txt
 
 From those tif files, the following datasets have been generated:
 * Res: 127683 .npy files, 256x256 resolution, 32GB of size.
 * Res: ? .npy files, 1024x1024 resolution, 25GB of size.
+=======
+>>>>>>> Stashed changes
 
 ## Models
 
