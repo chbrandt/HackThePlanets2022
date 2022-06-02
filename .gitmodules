@@ -1,0 +1,6 @@
+[submodule "stylegan2-ada-fork"]
+	path = stylegan2-ada-fork
+	url = git@github.com:LeoBaro/stylegan2-ada.git
+[submodule "nenias-latent-space-explorer-generators"]
+	path = nenias-latent-space-explorer-generators
+	url = https://gitlab.neanias.eu/s3-service/latent-space-explorer/generator.git
