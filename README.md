@@ -113,6 +113,13 @@ images = np.squeeze(images, axis=2)
 ```
 This will overcome a runtime error.
 
-#### Results
-Model for 512 resolution images:
-![StyleGAN2-ADA Generator](assets/img/stylega2-ada-512-res-fakes001228.png)
+#### Experiments
+
+Model for 512 resolution images. Models and logs:
+* 00005-craters-multi-res-512-256st-mirror-stylegan2
+* 00006-craters-multi-res-512-256st-mirror-stylegan2-resumecustom
+![StyleGAN2-ADA (512x512) Generator](assets/img/stylega2-ada-512-res-fakes001228.png)
+
+Model for 1024 resolution images. Models and logs:
+* 00007-craters-multi-res-1024-mirror-stylegan2
+![StyleGAN2-ADA (1024x1024) Generator](assets/img/stylega2-ada-1024-res-fakes000778.png)
