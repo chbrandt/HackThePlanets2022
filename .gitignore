@@ -1,12 +1,24 @@
-# Files
-adam_api_key.txt
+# Extensions
 *.zip
 *.npy
 *.tif
 *.pickle
-adamapi_docker/loadvars.sh
 *.DS_Store*
 *.png
+
+# Files
+loadenv.sh
+adam_api_key.txt
+adamapi_docker/loadvars.sh
+explore_clustering.ipynb
+kmeans_clustering_tf.ipynb
+
+# Folders
+data/latent_space
+!data/latent_space/ConvolutionalAutoEncoderSmall/embeddings.json
+!data/latent_space/ConvolutionalAutoEncoder/embeddings.json
+!data/latent_space/SimCLR/embeddings.json
+
 
 # Virtual environments
 hackpenv
