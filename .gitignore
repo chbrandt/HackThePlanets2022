@@ -2,7 +2,6 @@
 *.zip
 *.npy
 *.tif
-*.pickle
 *.DS_Store*
 *.png
 
