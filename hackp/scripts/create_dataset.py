@@ -3,6 +3,7 @@ import logging
 import argparse
 import numpy as np
 from time import time
+from PIL import Image
 from os import listdir
 import multiprocessing
 from pathlib import Path
@@ -10,16 +11,21 @@ from functools import partial
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from hackp.utils.tif import read_tif
-from hackp.utils.imgproc import extract_regions
+from hackp.utils.imgproc import extract_regions, linear_stretch
 
-def save_img(img, output_dir, filename):
+def save_img(img, output_dir, filename, save_jpg=False):
 
     output_file = output_dir.joinpath(filename).with_suffix(".npy")
     
     if not output_file.exists():
-        return np.save(output_file, img)
-    
-    return False 
+        np.save(output_file, img)
+        
+    if save_jpg:
+        output_file = output_dir.joinpath(filename).with_suffix(".jpg")
+        im = Image.fromarray(np.squeeze(img, axis=-1)).convert("L")
+        im.save(output_file)
+
+    return True 
     
 def extract_patch_and_save(output_dir, tif_file):
 
@@ -30,10 +36,12 @@ def extract_patch_and_save(output_dir, tif_file):
         start_t = time()
 
         try:
-            regions = np.expand_dims( 
-                            extract_regions(read_tif(tif_file), args.size, args.stride)
-                                .reshape(-1, args.size, args.size)
-            , axis=-1) # => (N,H,W,C)
+            regions = np.expand_dims(
+                np.apply_along_axis(
+                    linear_stretch, 1, 
+                        extract_regions(read_tif(tif_file), args.size, args.stride))
+                            .reshape(-1, args.size, args.size), axis=-1) # => (N,H,W,C)
+
         except Exception as e:    
             logging.error(f"{pid} - Exception during reading tif and images extraction:\n\n{e}")
             return 0

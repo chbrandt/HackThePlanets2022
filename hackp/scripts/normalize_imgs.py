@@ -26,11 +26,6 @@ def export_imgs(images, filename_suffix, output_dir):
     output_file = output_dir.joinpath(f"{filename_suffix}.png")
     fig.savefig(output_file, dpi=300)
 
-def linear_stretch(img, a, b):
-    c = img.min()
-    d = img.max()
-    return (img-c) * ((b-a)/(d-c)) + a
-
 if __name__=='__main__':
 
     parser = argparse.ArgumentParser()

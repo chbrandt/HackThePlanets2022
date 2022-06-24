@@ -2,6 +2,11 @@ import numpy as np
 import tensorflow as tf
 from tensorflow.image import extract_patches
 
+def linear_stretch(img, a=0, b=255):
+    c = img.min()
+    d = img.max()
+    return (img-c) * ((b-a)/(d-c)) + a
+
 
 def extract_regions(img, region_size, stride):
 

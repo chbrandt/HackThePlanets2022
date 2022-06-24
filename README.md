@@ -64,7 +64,7 @@ cd stylegan2-ada-fork
 conda env create --file environment.yml
 ```
 #### Dataset for StyleGAN2-ADA
-The .npy dataset [must be converted into multi-resolution TFRecords](https://github.com/LeoBaro/stylegan2-ada/tree/3bba7a31472ec69cbc1475d6529a8614206ded2a#preparing-datasets). 
+The .npy dataset [must be converted into multi-resolution TFRecords](https://github.com/LeoBaro/stylegan2-ada/tree/3bba7a31472ec69cbc1475d6529a8614206ded2a#preparing-datasets).
 The dataset_tool.py script has been modified to be able to process .npy data and to
 write preview of the generated images in the .png format (instead of showing them with opencv).
 ```
@@ -86,6 +86,10 @@ Check the [StyleGAN2-ada README.md](https://github.com/LeoBaro/stylegan2-ada/tre
 If you want to restore a training, add the following input parameter:
 ```
 --resume=~/training-runs/<RUN_NAME>/network-snapshot-<KIMG>.pkl
+```
+#### Generating
+```
+python generate.py --outdir=generate_out --seeds=1,2,3,4,5,6,7,8,9,10 --network=training-runs/00007-craters-multi-res-1024-mirror-stylegan2/network-snapshot-000819.pkl
 ```
 
 #### Tensorboard
@@ -113,6 +117,7 @@ images = np.squeeze(images, axis=2)
 ```
 This will overcome a runtime error.
 
+<<<<<<< Updated upstream
 #### Experiments
 
 Model for 512 resolution images. Models and logs:
@@ -123,3 +128,6 @@ Model for 512 resolution images. Models and logs:
 Model for 1024 resolution images. Models and logs:
 * 00007-craters-multi-res-1024-mirror-stylegan2
 ![StyleGAN2-ADA (1024x1024) Generator](assets/img/stylega2-ada-1024-res-fakes000778.png)
+=======
+#### Trained models
+>>>>>>> Stashed changes
