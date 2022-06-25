@@ -13,21 +13,22 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from hackp.utils.tif import read_tif
 from hackp.utils.imgproc import extract_regions, linear_stretch
 
-def save_img(img, output_dir, filename, save_jpg=False):
+def save_img(img, output_dir, filename, output_type):
 
-    output_file = output_dir.joinpath(filename).with_suffix(".npy")
-    
-    if not output_file.exists():
-        np.save(output_file, img)
+    if output_type == "npy":
+        output_file = output_dir.joinpath(filename).with_suffix(".npy")
+        if not output_file.exists():
+            np.save(output_file, img)
         
-    if save_jpg:
+    if output_type == "jpg":
         output_file = output_dir.joinpath(filename).with_suffix(".jpg")
-        im = Image.fromarray(np.squeeze(img, axis=-1)).convert("L")
-        im.save(output_file)
+        if not output_file.exists():
+            im = Image.fromarray(np.squeeze(img, axis=-1)).convert("L")
+            im.save(output_file)
 
     return True 
     
-def extract_patch_and_save(output_dir, tif_file):
+def extract_patch_and_save(output_dir, output_type, tif_file):
 
         pid = multiprocessing.current_process().name
 
@@ -52,7 +53,7 @@ def extract_patch_and_save(output_dir, tif_file):
         start_t = time()
         count = 0
         for idx,region in enumerate(regions):
-            if save_img(region, output_dir, tif_file.stem+f"_{idx}"):
+            if save_img(region, output_dir, tif_file.stem+f"_{idx}", output_type):
                 count += 1
 
         w_time = time() - start_t
@@ -69,6 +70,7 @@ if __name__=='__main__':
     parser.add_argument("-o", "--output", type=str, required=True, help='The path to an output direcotry that will contain the output files')
     parser.add_argument("-sz", "--size", type=int, required=True, help='The size of the square images that are going to be extracted')
     parser.add_argument("-st", "--stride", type=int, required=True, help='If stride==size, there will be no overlapping')
+    parser.add_argument("-of", "--outputformat", type=str, required=True, choices=["npy","jpg"], help="The type of the output files")
     parser.add_argument("-j", "--jobs", type=int, required=False, default=2, help="The number of worker reader threads")
     args = parser.parse_args()
 
@@ -100,7 +102,7 @@ if __name__=='__main__':
     if args.jobs > 0:
         results = []
         with multiprocessing.Pool(processes=args.jobs) as pool:
-            for result in pool.imap(partial(extract_patch_and_save, output_dir), unzipped_data_files):
+            for result in pool.imap(partial(extract_patch_and_save, output_dir, args.outputformat), unzipped_data_files):
                 results.append(result)
             pool.close()
             pool.join()
@@ -108,4 +110,4 @@ if __name__=='__main__':
 
     else:
         for unzipped_data_file in unzipped_data_files:
-            extract_patch_and_save(output_dir, unzipped_data_file)
+            extract_patch_and_save(output_dir, args.outputformat, unzipped_data_file)

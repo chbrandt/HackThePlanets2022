@@ -39,20 +39,18 @@ export PYTHONPATH=/shared_dir
 cd hackp/scripts
 python download_products_from_ids.py -f /shared_dir/data/craters_dataset.txt -o /shared_volume/tif_craters -t <apikey> -dsid 58592:MRO_CTX
 ```
-2. Use the 'create_dataset.py' script to generate the images for the training in .npy format.
-3. You can use the 'display_dataset.py' script to generate some .png previews of those images.
+2. Use the 'create_dataset.py' script to generate the images for the training in .npy o .jpg formats.
 
 ### Dataset 'craters'
 The 56 products that compose this dataset can be found in data/craters_dataset.txt
 
 From those tif files, the following datasets have been generated:
 
-| Resolution | Stride | Number of files | Total memory | Location                                           |
-|------------|--------|-----------------|--------------|----------------------------------------------------|
-| 128x128    | 128    | 529787          | 35GB         | agilehost3:/scratch/hacktheplanets/craters-npy-128 |
-| 256x256    | 256    | 127683          | 32GB         | agilehost3:/scratch/hacktheplanets/craters-npy-256 |
-| 512x512    | 256    | 118411          | 117GB        | ibmtest:/scratch/hack_the_planets/craters-npy-512-256st    |
-| 1024x1024  | 1024   | 6212            | 25GB         | ibmtest:/scratch/hack_the_planets/craters-npy-1024         |
+| Resolution |Number of products |Stride | Number of files | Total memory | Location                                           |
+|------------|-------------------|-------|----------------|--------------|----------------------------------------------------|
+| 128x128    | 3                 | 128   | 29875          | 2GB          | agilehost3:/scratch/hacktheplanets/craters-npy-128 |
+| 1024x1024  | 56                | 1024  | 6212           | 25GB         | ibmtest:/scratch/hack_the_planets/craters-npy-1024 |
+
 ## Models
 ### StyleGAN2-ADA - ppc64le (POWER9)
 The NVIDIA StyleGAN2-ADA repository has been forked, and adapted to work with a
@@ -116,18 +114,3 @@ This will overcome a compilation error (__ieee128 is undefined).
 images = np.squeeze(images, axis=2)
 ```
 This will overcome a runtime error.
-
-<<<<<<< Updated upstream
-#### Experiments
-
-Model for 512 resolution images. Models and logs:
-* 00005-craters-multi-res-512-256st-mirror-stylegan2
-* 00006-craters-multi-res-512-256st-mirror-stylegan2-resumecustom
-![StyleGAN2-ADA (512x512) Generator](assets/img/stylega2-ada-512-res-fakes001228.png)
-
-Model for 1024 resolution images. Models and logs:
-* 00007-craters-multi-res-1024-mirror-stylegan2
-![StyleGAN2-ADA (1024x1024) Generator](assets/img/stylega2-ada-1024-res-fakes000778.png)
-=======
-#### Trained models
->>>>>>> Stashed changes
