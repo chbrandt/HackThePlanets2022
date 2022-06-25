@@ -9,6 +9,7 @@ else
     -e DISPLAY=$DISPLAY \
     -v /tmp/.X11-unix:/tmp/.X11-unix:rw \
     -v "${SHARED_VOLUME}":/shared_volume \
+    -v /data01/homes/baroncelli/HackThePlanets2022/nenias-latent-space-explorer-generators/inference/20220623-174308-simclr_oasfbo:/output \
     -v $script_dir/../notebooks:/shared_dir/notebooks \
     -v $script_dir/../data:/shared_dir/data \
     -v $script_dir/../hackp:/shared_dir/hackp \
