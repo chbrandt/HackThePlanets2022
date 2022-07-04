@@ -71,9 +71,9 @@ if __name__=='__main__':
             try:
                 print(f"Downloading {product_id} to {output_filename}")
                 adam_data_service.getData(args.dataset_id, productId = product_id, outputFname=output_filename)
-                p = Process(target=extract_zip, args=(output_dir,output_filename))
-                p.start()
-                processes.append(p)
+                #p = Process(target=extract_zip, args=(output_dir,output_filename))
+                #p.start()
+                #processes.append(p)
 
             except Exception as e:
                 print(f"Product ID {product_id} is not found")
